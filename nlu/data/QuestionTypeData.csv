@@ -1,0 +1,113 @@
+Questions,IntentType,Base Data Reference
+5 điều Bác Hồ dạy là gì ?,1,1
+5 điều Bác Hồ dạy thiếu niên là gì ?,1,1
+5 điều Hồ Chí Minh căn dặn thanh thiếu niên ?,1,1
+5 điều Bác Hồ dạy thanh thiếu niên nhi đồng ?,1,1
+Bác Hồ sinh năm nào ?,2,2
+Bác Hồ sinh ở đâu ?,3,2
+Hồ Chí Minh ra đời ở đâu vào năm nào ?,"2,3",2
+Nội dung chính của Thư chúc mừng năm mới là gì?,1,3
+Thư chúc mừng năm mới có nội dung chính là gì?,1,3
+Nội dung chính của Thư chúc mừng năm mới được Bác viết năm 1949 là gì?,1,3
+Thư chúc mừng năm mới được Hồ Chí Minh viết năm 1949 có nội dung chính là gì?,1,3
+Thư chúc mừng năm mới được viết vào năm nào?,2,3
+Thư chúc mừng năm mới được Bác viết vào thời gian nào?,2,3
+Tuyên ngôn Đảng Cộng sản được phát biểu năm nào?,2,4
+Ai đã pháp biểu Tuyên ngôn Đảng Cộng sản?,4,4
+Tuyên ngôn Đảng Cộng sản được phát biểu vào năm nào và bởi ai?,"2,4",4
+Người cộng sản đầu tiên của Đông Dương là ai?,4,5
+Việt Nam Thanh niên Cách mạng đồng chí Hội được tổ chức vào năm nào?,2,6
+Những ai đã tổ chức Việt Nam Thanh niên Cách mạng đồng chí Hội,4,6
+Việt Nam Thanh niên Cách mạng đồng chí Hội được tổ chức ở đâu?,3,6
+"Việt Nam Thanh niên Cách mạng đồng chí Hội được tổ chức khi nào, bởi ai?","2,4",6
+"Việt Nam Thanh niên Cách mạng đồng chí Hội được tổ chức ở đâu, bởi ai?","3,4",6
+"Việt Nam Thanh niên Cách mạng đồng chí Hội được tổ chức khi nào, ở đâu? ","2,3",6
+"Việt Nam Thanh niên Cách mạng đồng chí Hội được tổ chức khi nào, ở đâu và bởi ai?","2,3,4",6
+"Ban đầu, nước Việt Nam thành lập bao nhiêu nhóm cộng sản?",6,7
+"Ban đầu, nước ta thành lập những nhóm cộng sản nào?",1,7
+"Ban đầu nước ta thành lập bao nhiêu nhóm cộng sản, là những nhóm nào?","6,1",7
+Tại sao 3 nhóm cộng sản tại Việt Nam thời kì đầu lại khó đi đến thống nhất?,5,8
+Tại sao các nhóm cộng sản tại Việt Nam thời kì đầu lại khó đi đến thống nhất?,5,8
+Ai là người thống nhất các nhóm cộng sản Việt Nam thành một đảng?,4,9
+Các nhóm cộng sản tại Việt Nam được thống nhất khi nào?,2,9
+Các nhóm cộng sản tại Việt Nam được thống nhất khi nào và bởi ai?,"2,4",9
+Cuộc cách mạng đầu tiên do giai cấp vô sản Việt Nam lãnh đạo là gì?,1,10
+Cuộc cách mạng đầu tiên do đảng Cộng sản Việt Nam lãnh đạo là gì?,1,10
+Xôviết Nghệ An đã lôi cuốn được những thành phần nào tham gia?,1,11
+Xôviết Nghệ An đã lôi cuốn được những ai tham gia?,1,11
+Đội du kích đầu tiên của Việt Nam thành lập ở đâu?,3,12
+Đội du kích đầu tiên của Việt Nam gồm bao nhiêu người?,6,12
+"Đội du kích đầu tiên của nước ta được thành lập ở đâu, gồm bao nhiêu người?","3,6",12
+Vũ khí của đội du kích đầu tiên gồm có những gì?,1,13
+Ai được giao nhiệm vụ cải tổ đội du kích đầu tiên của nước ta thành đội Nam tiến?,4,14
+Bức thư Đảng ta do ai viết?,4,15
+Bức thư Đảng ta được viết khi nào?,2,15
+"Bức thư Đảng do ai viết, viết khi nào?","4,2",15
+Đảng ta được Quốc tế Cộng sản nhận làm một chi nhánh chính thức khi nào?,2,16
+Bản Kiểm điểm công việc của Đảng được viết vào thời gian nào?,2,17
+Nội dung chính của bản Kiểm điểm công việc của Đảng là gì?,1,18
+Bài nói chuyện trong buổi bế mạc Hội nghị Cán bộ của Đảng lần thứ sáu được nói vào thời gian nào?,2,19
+Nội dung chính trong Bài nói chuyện trong buổi bế mạc Hội nghị Cán bộ của Đảng lần thứ sáu là gì?,1,20
+"Thư gửi chiến sĩ du kích Hồng Sinh, xã Ngũ Lão, huyện Hoà An do ai viết?",4,21
+"Thư gửi chiến sĩ du kích Hồng Sinh, xã Ngũ Lão, huyện Hoà An được viết vào thời gian nào?",2,21
+"Thư gửi chiến sĩ du kích Hồng Sinh, xã Ngũ Lão, huyện Hoà An do ai viết và được viết vào thời gian nào?","4,2",21
+"Thư gửi chiến sĩ du kích Hồng Sinh, xã Ngũ Lão, huyện Hoà An có nội dung chính là gì?",1,22
+"Thư gửi các cán bộ, dân quân trường Lê Bình khoá 2 được viết vào thời gian nào?",2,23
+"Thư gửi các cán bộ, dân quân trường Lê Bình khoá 2 do ai viết?",4,23
+"Thư gửi các cán bộ, dân quân trường Lê Bình khoá 2 do ai viết và viết vào thời gian nào?","4,2",23
+"Thư gửi các cán bộ, dân quân trường Lê Bình khoá 2 có nội dung chính là gì?",1,24
+"Thư gửi các điền chủ huyện Yên Dũng, Bắc Giang được viết vào thời gian nào?",2,25
+"Thư gửi các điền chủ huyện Yên Dũng, Bắc Giang do ai viết?",4,25
+"Thư gửi các điền chủ huyện Yên Dũng, Bắc Giang do ai viết, viết vào thời gian nào?","4,2",25
+"Nội dung chính của Thư gửi các điền chủ huyện Yên Dũng, Bắc Giang là gì?",1,26
+Bản Ý kiến về báo cáo năm 1948 của các bộ được viết khi nào?,2,27
+Bản Ý kiến về báo cáo năm 1948 của các bộ được viết bởi ai?,4,27
+Bản Ý kiến về báo cáo năm 1948 của các bộ được viết khi nào và bởi ai?,"4,2",27
+Nội dung chính của bản Ý kiến về báo cáo năm 1948 của các bộ là gì?,1,28
+Thơ chúc tết được viết khi nào?,2,29
+Thơ chúc tết được viết bởi ai?,4,29
+Thơ chúc tết được viết khi nào và bởi ai?,"2,4",29
+Nội dung chính của Thơ chúc tết là gì?,1,30
+Kết quả cuộc họp Hội đồng Chính phủ là gì?,1,31
+Thái độ ta đối với Vĩnh Thụy là gì?,1,32
+Thực hư về tin đồn hiệp ước giữa Mao - Hồ?,1,33
+Thư chúc Tết đồng bào trong vùng tạm bị địch chiếm do ai viết?,4,34
+Nội dung chính của thư chúc Tết đồng bào trong vùng tạm bị địch chiếm là gì?,1,35
+Thư chúc Tết các cháu nhi đồng toàn quốc do ai viết?,4,36
+Nội dung chính của thư chúc Tết các cháu nhi đồng toàn quốc là gì?,1,37
+Hãng thông tấn Anh Reuter gửi điện phỏng vấn Hồ Chí Minh vào thời gian nào?,2,38
+Thư gửi Đội lão quân huyện Nam Đàn được viết khi nào?,2,39
+Thư gửi Đội lão quân huyện Nam Đàn do ai viết?,4,39
+"Thư gửi Đội lão quân huyện Nam Đàn do ai viết, viết khi nào?","2,4",39
+Nội dung chính của Thư gửi Đội lão quân huyện Nam Đàn là gì?,1,40
+Thư gửi nam nữ học viên Trường Y tá Liên khu I được viết vào thời gian nào?,2,41
+Thư gửi nam nữ học viên Trường Y tá Liên khu I do ai viết?,4,41
+"Thư gửi nam nữ học viên Trường Y tá Liên khu I do ai viết, viết khi nào?","4,2",41
+Nội dung chính của Thư gửi nam nữ học viên Trường Y tá Liên khu I là gì?,1,42
+Thư gửi ông Hồ Đức Thành được viết vào thời gian nào?,2,43
+Thư gửi ông Hồ Đức Thành do ai viết?,4,43
+"Thư gửi ông Hồ Đức Thành được viết bởi ai, vào thời gian nào?","4,2",43
+Thư gửi ông Hồ Đức Thành có nội dung chính là gì?,1,44
+"Thư gửi ngành tơ sợi Trung ương, Bộ kinh tế được viết vào thời gian nào?",2,45
+"Thư gửi ngành tơ sợi Trung ương, Bộ kinh tế do ai viết?",4,45
+"Thư gửi ngành tơ sợi Trung ương, Bộ kinh tế do ai viết, viết khi nào?","2,4",45
+"Thư gửi ngành tơ sợi Trung ương, Bộ kinh tế do Hồ Chí Minh viết phải không?",7,45
+"Thư gửi ngành tơ sợi Trung ương, Bộ kinh tế được viết vào ngày 3-3-1949 phải không?",7,45
+"Thư gửi ngành tơ sợi Trung ương, Bộ kinh tế có nội dung chính là gì?",1,46
+Hồ Chí Minh trả lời nhà báo Mỹ Harold Issacs vào thời điểm nào?,2,47
+Hồ Chí Minh trả lời nhà báo Mỹ Harold Issacs vào tháng 3-1949 phải không?,7,47
+Thư gửi các chiến sĩ đường số 5 được viết khi nào?,2,48
+Thư gửi các chiến sĩ đường số 5 do ai viết?,4,48
+"Thư gửi các chiến sĩ đường số 5 do ai viết, viết khi nào?","4,2",48
+Thư gửi các chiến sĩ đường số 5 do Hồ Chí Minh viết phải không?,7,48
+Thư gửi các chiến sĩ đường số 5 được viết và tháng 3-1949 phải không?,7,48
+Nội dung chính của Thư gửi các chiến sĩ đường số 5 là gì?,1,49
+Hồ Chí Minh trả lời điện phỏng vấn của ông Walter Briggs vào thời gian nào?,2,50
+Hồ Chí Minh trả lời điện phỏng vấn của ông Walter Briggs vào tháng 3-1949 phải không?,7,50
+Hồ Chí Minh trả lời phỏng vấn của nhà báo Standley Harrison vào thời gian nào?,2,51
+Hồ Chí Minh trả lời phỏng vấn của nhà báo Standley Harrison vào tháng 3-1949 phải không?,7,51
+Thư gửi Liên đoàn Lao động Liên khu I được viết khi nào?,2,52
+Thư gửi Liên đoàn Lao động Liên khu I do ai viết?,4,52
+"Thư gửi Liên đoàn Lao động Liên khu I do ai viết, được viết khi nào?","4,2",52
+Thư gửi Liên đoàn Lao động Liên khu I do Hồ Chí Minh viết phải không?,7,52
+Thư gửi Liên đoàn Lao động Liên khu I viết vào tháng 3-1949 phải không?,7,52

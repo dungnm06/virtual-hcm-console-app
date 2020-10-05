@@ -1,0 +1,19 @@
+{
+  "vncorenlp": "C:\\Users\\Tewi\\Desktop\\nlp\\vncorenlp\\VnCoreNLP-1.1.1.jar",
+  "bert": "vinai/phobert-base",
+  "question_type_map": {
+      "1": "what",
+      "2": "when",
+      "3": "where",
+      "4": "who",
+      "5": "why",
+      "6": "how",
+      "7": "yesno"
+  },
+  "intent_data_path": "data/IntentData.csv",
+  "intent_model_path": "data/intent_reconizer",
+  "intent_map_path": "data/intent_map.pickle",
+  "question_type_data_path": "data/QuestionTypeData",
+  "question_type_model_path": "data/question_type_reconizer",
+  "question_type_map_path": "data/question_type_map.pickle"
+}

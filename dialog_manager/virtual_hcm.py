@@ -1,17 +1,15 @@
 from utils.files import *
-from utils.strings import *
 from common.constant import *
 from nlu.question_type_classifier import QuestionTypeClassifier
 from nlu.intent_classifier import IntentClassifier
 from nlu.model.intent import *
-import pandas as pd
 
 
 class VirtualHCMChatbot(object):
-    def __init__(self, config_path):
+    def __init__(self):
         print("Stating bot, loading resources...")
         # Application config
-        self.config = load_config(config_path)
+        self.config = load_config(CONFIG_PATH)
         # Intent reconizer
         self.intent_reconizer = IntentClassifier(self.config[VNCORENLP], self.config[BERT], self.config)
         self.intent2idx, self.idx2intent = self.intent_reconizer.load()
@@ -28,5 +26,12 @@ class VirtualHCMChatbot(object):
         pass
 
     def chat(self, question):
-        intent = self.intent_reconizer.predict(question)
-        type = self.question_type_reconizer.predict(question)
+        intent_name = self.intent_reconizer.predict(question)
+        types = self.question_type_reconizer.predict(question)
+        intent = self.intent_datas[intent_name]
+        response = intent.base_response
+        for t in types:
+            type_id = self.type2idx[t]
+            if type_id in intent.intent_types:
+                response += (' ' + intent.corresponding_datas[type_id])
+        return response

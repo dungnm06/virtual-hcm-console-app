@@ -139,11 +139,11 @@ class IntentClassifier:
 
     def load(self):
         datapath = self.config[INTENT_MODEL_PATH]
+        # Pretrained model
+        print('(IntentClassifier) Loading pretrained model from: ', datapath)
+        self.model = tf.keras.models.load_model(datapath)
         # Max sentence length
         self.input_sentence_length = self.model.layers[0].output_shape[0][1]
-        # Pretrained model
-        self.model = tf.keras.models.load_model(datapath)
-        print('(IntentClassifier) Loading pretrained model from: ', datapath)
         # Intent maps
         intent_maps = unpickle_file(self.config[INTENT_MAP_PATH])
         self.intent_to_idx = intent_maps[OBJ2IDX]

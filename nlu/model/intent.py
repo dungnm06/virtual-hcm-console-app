@@ -46,6 +46,7 @@ class Intent:
 
 
 def load_from_data(datapath):
+    intent_maps = {}
     intent_datas = pd.read_csv(datapath)
     for data in intent_datas:
         intent = Intent()
@@ -82,3 +83,5 @@ def load_from_data(datapath):
                     noun_phrases = [{part.strip(':')[0]: part.strip(':')[1] for part in noun_phrases}]
                     type_value_pairs[word_type] = noun_phrases
         intent.sentence_components = type_value_pairs
+        intent_maps[intent.intent] = intent
+    return intent_maps

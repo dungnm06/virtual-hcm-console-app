@@ -147,11 +147,11 @@ class QuestionTypeClassifier:
 
     def load(self):
         datapath = self.config[QUESTION_TYPE_MODEL_PATH]
+        # Pretrained model
+        print('(QuestionTypeClassifier) Loading pretrained model from: ', datapath)
+        self.model = tf.keras.models.load_model(datapath)
         # Max sentence length
         self.input_sentence_length = self.model.layers[0].output_shape[0][1]
-        # Pretrained model
-        self.model = tf.keras.models.load_model(datapath)
-        print('(QuestionTypeClassifier) Loading pretrained model from: ', datapath)
         # Intent maps
         type_maps = unpickle_file(self.config[QUESTION_TYPE_MAP_PATH])
         self.type2id = type_maps[OBJ2IDX]
@@ -182,7 +182,7 @@ class QuestionTypeClassifier:
         # print(x_tensor)
         preds = self.model.predict(input_dict)
         print(preds['type'])
-        preds = np.array([[1 if acc > 0.5 else 0 for acc in p] for p in preds['type']])
+        preds = np.array([[1 if acc > float(self.config[PREDICT_THRESHOLD]) else 0 for acc in p] for p in preds['type']])
         preds = self.label_binarizer.inverse_transform(preds)
         for predict in preds:
             print('Predicted types: ', ', '.join(predict))

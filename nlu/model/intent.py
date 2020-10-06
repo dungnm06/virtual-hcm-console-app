@@ -81,23 +81,23 @@ def load_from_data(datapath):
             sentence_components = data[SENTENCE_COMPONENTS].split('#')
             type_value_pairs = {}
             for component in sentence_components:
-                print(component)
+                # print(component)
                 smaller_parts = component.split(',')
-                print(smaller_parts)
+                # print(smaller_parts)
                 for p in smaller_parts:
                     split_idx = p.find(':')
                     type_value_pairs = {p[:split_idx]: p[(split_idx + 1):]}
-                    print(type_value_pairs)
+                    # print(type_value_pairs)
                     for word_type in type_value_pairs:
                         if word_type.lower() == 'ns':
                             noun_phrases = type_value_pairs[word_type][1:(len(type_value_pairs[word_type]) - 1)].split(
                                 '+')
-                            print(noun_phrases)
+                            # print(noun_phrases)
                             tmp_dict = {}
                             for part in noun_phrases:
                                 spart = part.split(':')
                                 tmp_dict[spart[0]] = spart[1]
-                            print(tmp_dict)
+                            # print(tmp_dict)
                             type_value_pairs[word_type] = tmp_dict
             intent.sentence_components = type_value_pairs
 

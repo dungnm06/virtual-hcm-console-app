@@ -48,7 +48,7 @@ class Intent:
 def load_from_data(datapath):
     intent_maps = {}
     intent_datas = pd.read_csv(datapath)
-    for data in intent_datas:
+    for idx, data in intent_datas.iterrows():
         intent = Intent()
         # ID
         intent.intent_id = int(data[ID])
@@ -64,24 +64,43 @@ def load_from_data(datapath):
         cd = data[CORRESPONDING_DATAS].split('#')
         intent.corresponding_datas = {i: v for i, v in zip(intent.intent_types, cd)}
         # Critical datas
-        intent.critical_datas = [tuple(i.split(',')) for i in data[CRITICAL_DATAS].split('#')]
+        cd = data[CRITICAL_DATAS]
+        if not pd.isnull(cd):
+            intent.critical_datas = [tuple(i.split(',')) for i in cd.split('#')]
         # Reference document id
-        intent.reference_doc_id = data[REFERENCE_DOC_ID]
+        rdi = data[REFERENCE_DOC_ID]
+        if not pd.isnull(rdi):
+            intent.reference_doc_id = rdi
         # Reference document page
-        intent.reference_doc_page = int(data[REFERENCE_DOC_PAGE]) if isInt(data[REFERENCE_DOC_PAGE]) else data[
-            REFERENCE_DOC_PAGE]
+        rdp = data[REFERENCE_DOC_PAGE]
+        if not pd.isnull(rdp):
+            intent.reference_doc_page = int() if isInt(rdp) else rdp
         # Sentence components
-        sentence_components = data[SENTENCE_COMPONENTS].split('#')
-        type_value_pairs = {}
-        for component in sentence_components:
-            smaller_parts = component.split(',')
-            type_value_pairs = {p.split(':')[0]: p.split(':')[1] for p in smaller_parts}
-            for word_type in type_value_pairs:
-                if word_type.lower() == 'ns':
-                    noun_phrases = [
-                        type_value_pairs[word_type][1:(len(type_value_pairs[word_type]) - 1)].split('+')]
-                    noun_phrases = [{part.strip(':')[0]: part.strip(':')[1] for part in noun_phrases}]
-                    type_value_pairs[word_type] = noun_phrases
-        intent.sentence_components = type_value_pairs
+        sc = data[SENTENCE_COMPONENTS]
+        if not pd.isnull(sc):
+            sentence_components = data[SENTENCE_COMPONENTS].split('#')
+            type_value_pairs = {}
+            for component in sentence_components:
+                print(component)
+                smaller_parts = component.split(',')
+                print(smaller_parts)
+                for p in smaller_parts:
+                    split_idx = p.find(':')
+                    type_value_pairs = {p[:split_idx]: p[(split_idx + 1):]}
+                    print(type_value_pairs)
+                    for word_type in type_value_pairs:
+                        if word_type.lower() == 'ns':
+                            noun_phrases = type_value_pairs[word_type][1:(len(type_value_pairs[word_type]) - 1)].split(
+                                '+')
+                            print(noun_phrases)
+                            tmp_dict = {}
+                            for part in noun_phrases:
+                                spart = part.split(':')
+                                tmp_dict[spart[0]] = spart[1]
+                            print(tmp_dict)
+                            type_value_pairs[word_type] = tmp_dict
+            intent.sentence_components = type_value_pairs
+
         intent_maps[intent.intent] = intent
+
     return intent_maps

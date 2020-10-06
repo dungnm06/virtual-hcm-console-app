@@ -158,7 +158,7 @@ class QuestionTypeClassifier:
         self.id2type = type_maps[IDX2OBJ]
         # Label Binarizer
         self.label_binarizer = MultiLabelBinarizer()
-        self.label_binarizer.fit_transform(list(self.id2type.values()))
+        self.label_binarizer.fit_transform([list(self.id2type.values())])
         return self.type2id, self.id2type
 
     def predict(self, input_query):

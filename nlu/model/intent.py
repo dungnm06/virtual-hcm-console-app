@@ -75,7 +75,8 @@ def load_from_data(datapath):
         # Critical datas
         cd = data[INTENT_CRITICAL_DATAS]
         if not pd.isnull(cd):
-            intent.critical_datas = [tuple(i.split(COMMA)) for i in cd.split(HASH)]
+            for i in cd.split(HASH):
+                intent.critical_datas.append([tuple(i1.split(COLON)) for i1 in i.split(COMMA)])
         # Reference document id
         rdi = data[INTENT_REFERENCE_DOC_ID]
         if not pd.isnull(rdi):

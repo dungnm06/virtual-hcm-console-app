@@ -10,6 +10,13 @@
       "6": "how",
       "7": "yesno"
   },
+  "named_entity_types": ["LOC", "PER", "ORG", "MISC"],
+  "critical_data_check_pattern": [
+    "any-E-main",
+    "N-main",
+    "main-N",
+    "main-E-any"
+  ],
   "intent_data_path": "nlu/data/IntentData.csv",
   "intent_model_path": "nlu/data/intent_reconizer",
   "intent_map_path": "nlu/data/intent_map.pickle",

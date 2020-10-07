@@ -1,9 +1,7 @@
 from utils.files import *
-from common.constant import *
 from nlu.question_type_classifier import QuestionTypeClassifier
 from nlu.intent_classifier import IntentClassifier
 from nlu.model.intent import *
-from vncorenlp import VnCoreNLP
 
 
 class VirtualHCMChatbot(object):
@@ -11,13 +9,11 @@ class VirtualHCMChatbot(object):
         print("Stating bot, loading resources...")
         # Application config
         self.config = load_config(CONFIG_PATH)
-        # VNCoreNLP tokenizer
-        rdrsegmenter = VnCoreNLP(self.config[VNCORENLP])
         # Intent reconizer
-        self.intent_reconizer = IntentClassifier(rdrsegmenter, self.config[BERT], self.config)
+        self.intent_reconizer = IntentClassifier(self.config[BERT], self.config)
         self.intent2idx, self.idx2intent = self.intent_reconizer.load()
         # Question type reconizer
-        self.question_type_reconizer = QuestionTypeClassifier(rdrsegmenter, self.config[BERT], self.config)
+        self.question_type_reconizer = QuestionTypeClassifier(self.config[BERT], self.config)
         self.type2idx, self.idx2type = self.question_type_reconizer.load()
         # For dialogue states tracking (list of tuples(intent,action))
         self.state_tracker = []

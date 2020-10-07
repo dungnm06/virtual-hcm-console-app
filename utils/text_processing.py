@@ -2,24 +2,6 @@ import re
 import numpy as np
 
 
-def batch_word_segmentation(segmenter, texts):
-    segmented_text = []
-    if type(texts) is list:
-        for text in texts:
-            segmented_text.extend(word_segmentation(segmenter, text))
-    elif type(texts) is str:
-        segmented_text.extend(word_segmentation(segmenter, texts))
-    else:
-        raise Exception("Invaild input type, only str or list of string")
-  
-    return segmented_text
-
-
-def word_segmentation(segmenter, text):
-    word_segmented_text = segmenter.tokenize(text)
-    return [' '.join(sentence) for sentence in word_segmented_text]
-
-
 def text_prepare(text):
     """Performs tokenization and simple preprocessing."""
     replace_by_space_re = re.compile(r'[/(){}\[\]|@,;]')
@@ -41,10 +23,6 @@ def load_embeddings(embeddings_path):
       embeddings - dict mapping words to vectors;
       embeddings_dim - dimension of the vectors.
     """
-
-    # Hint: you have already implemented a similar routine in the 3rd assignment.
-    # Note that here you also need to know the dimension of the loaded embeddings.
-    # When you load the embeddings, use numpy.float32 type as dtype
 
     embeddings = {}
     dimension, initialized = 0, False

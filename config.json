@@ -16,5 +16,6 @@
   "question_type_data_path": "nlu/data/QuestionTypeData",
   "question_type_model_path": "nlu/data/question_type_reconizer",
   "question_type_map_path": "nlu/data/question_type_map.pickle",
+  "similary_words_file_path": "nlu/data/similary_words.json",
   "predict_threshold": "0.5"
 }

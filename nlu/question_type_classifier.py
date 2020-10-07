@@ -1,5 +1,5 @@
 # BERT imports
-from transformers import TFBertModel, BertConfig, AutoTokenizer
+from transformers import TFAutoModel, AutoConfig, AutoTokenizer
 # model initiations imports
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Dropout, Dense
@@ -13,7 +13,7 @@ import pandas as pd
 # numpy
 import numpy as np
 # Text processing utils
-from utils.text_processing import batch_word_segmentation
+from .language_processing import batch_word_segmentation
 from sklearn.preprocessing import MultiLabelBinarizer
 # Constant
 from common.constant import *
@@ -22,9 +22,8 @@ from utils.files import *
 
 
 class QuestionTypeClassifier:
-    def __init__(self, vncorenlp, bert_name, config):
+    def __init__(self, bert_name, config):
         self.config = config
-        self.rdrsegmenter = vncorenlp
         self.model = None
         self.input_sentence_length = None
         self.tokenizer, self.transformer_model, self.bert_config = self.load_bert(bert_name)
@@ -62,7 +61,7 @@ class QuestionTypeClassifier:
         train_data = train_data.sample(frac=1).reset_index(drop=True)
 
         # Tokenize the input
-        x = batch_word_segmentation(self.rdrsegmenter, train_data['question'].to_list())
+        x = batch_word_segmentation(train_data['question'].to_list())
         x = self.tokenizer(
             text=x,
             return_tensors='tf',
@@ -163,7 +162,7 @@ class QuestionTypeClassifier:
 
     def predict(self, input_query):
         print('Predict:')
-        x = batch_word_segmentation(self.rdrsegmenter, input_query)
+        x = batch_word_segmentation(input_query)
         print(x)
         x = self.tokenizer(
             text=x,
@@ -193,12 +192,12 @@ class QuestionTypeClassifier:
         ###################################
         # --------- Setup BERT ---------- #
         # Load transformers config and set output_hidden_states to False
-        config = BertConfig.from_pretrained(bert_name)
+        config = AutoConfig.from_pretrained(bert_name)
         config.output_hidden_states = True
         # Load BERT tokenizer
         tokenizer = AutoTokenizer.from_pretrained(bert_name)
         # Load the Transformers BERT model
-        transformer_model = TFBertModel.from_pretrained(bert_name, config=config)
+        transformer_model = TFAutoModel.from_pretrained(bert_name, config=config)
         return tokenizer, transformer_model, config
 
     @staticmethod

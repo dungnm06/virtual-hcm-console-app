@@ -1,5 +1,5 @@
 # BERT imports
-from transformers import TFBertModel, BertConfig, AutoTokenizer
+from transformers import TFAutoModel, AutoConfig, AutoTokenizer
 # model initiations imports
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Dropout, Dense
@@ -13,7 +13,7 @@ import pandas as pd
 # numpy
 import numpy as np
 # Text processing utils
-from utils.text_processing import batch_word_segmentation
+from .language_processing import batch_word_segmentation
 from utils.files import *
 # Constant
 from common.constant import *
@@ -23,9 +23,8 @@ import random
 
 
 class IntentClassifier:
-    def __init__(self, vncorenlp, bert_name, config):
+    def __init__(self, bert_name, config):
         self.config = config
-        self.rdrsegmenter = vncorenlp
         self.model = None
         self.input_sentence_length = None
         self.tokenizer, self.transformer_model, self.bert_config = self.load_bert(bert_name)
@@ -65,7 +64,7 @@ class IntentClassifier:
         x = list(x)
         y = tf.constant(list(y))
         # Tokenize the input
-        x = batch_word_segmentation(self.rdrsegmenter, x)
+        x = batch_word_segmentation(x)
         x = self.tokenizer(
             text=x,
             return_tensors='tf',
@@ -152,7 +151,7 @@ class IntentClassifier:
 
     def predict(self, input_query):
         print('Predict:')
-        x = batch_word_segmentation(self.rdrsegmenter, input_query)
+        x = batch_word_segmentation(input_query)
         print(x)
         x = self.tokenizer(
             text=x,
@@ -179,10 +178,10 @@ class IntentClassifier:
         ###################################
         # --------- Setup BERT ---------- #
         # Load transformers config and set output_hidden_states to False
-        config = BertConfig.from_pretrained(bert_name)
+        config = AutoConfig.from_pretrained(bert_name)
         config.output_hidden_states = True
         # Load BERT tokenizer
         tokenizer = AutoTokenizer.from_pretrained(bert_name)
         # Load the Transformers BERT model
-        transformer_model = TFBertModel.from_pretrained(bert_name, config=config)
+        transformer_model = TFAutoModel.from_pretrained(bert_name, config=config)
         return tokenizer, transformer_model, config

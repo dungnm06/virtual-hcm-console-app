@@ -76,7 +76,15 @@ def load_from_data(datapath):
         cd = data[INTENT_CRITICAL_DATAS]
         if not pd.isnull(cd):
             for i in cd.split(HASH):
-                intent.critical_datas.append([tuple(i1.split(COLON)) for i1 in i.split(COMMA)])
+                if i:
+                    group_data = []
+                    for i1 in i.split(COMMA):
+                        split_idx = i1.find(COLON)
+                        if i1.startswith('MISC'):
+                            group_data.append(('MISC', i1[(split_idx + 1):]))
+                        else:
+                            group_data.append((i1[:split_idx], i1[(split_idx + 1):]))
+                    intent.critical_datas.append(group_data)
         # Reference document id
         rdi = data[INTENT_REFERENCE_DOC_ID]
         if not pd.isnull(rdi):

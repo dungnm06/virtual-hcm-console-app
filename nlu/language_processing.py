@@ -8,7 +8,9 @@ from itertools import product
 config = load_config(CONFIG_PATH)
 rdrsegmenter = VnCoreNLP(config[VNCORENLP])
 ner_types = config[NAMED_ENTITY_TYPES]
-critical_data_check_patterns = config[CRITICAL_DATA_PATTERNS]
+critical_data_ng_patterns = config[CRITICAL_DATA_NG_PATTERNS]
+exclude_pos_tag = config[EXCLUDE_POS_TAG]
+exclude_words = config[EXCLUDE_WORDS]
 
 
 def word_segmentation_no_join(text):
@@ -40,6 +42,11 @@ def words_unsegmentation(sentence):
         return [SPACE.join([s2.strip().replace(UNDERSCORE, SPACE) for s2 in s1.split(SPACE)]) for s1 in sentence]
     else:
         raise Exception("Invaild input type, only str or list of string")
+
+
+def pos_tagging(sentence):
+    # Can only handle simple sentence for now
+    return rdrsegmenter.pos_tag(sentence)[0]
 
 
 def named_entity_reconize(sentence):
@@ -77,12 +84,16 @@ def named_entity_reconize(sentence):
     return named_entities_list
 
 
-def generate_similary_sentences(sentence_synonym_dict_pair):
+def generate_similary_sentences(sentence_synonym_dict_pair, word_segemented=False):
     org_sentence, synonym_dicts = sentence_synonym_dict_pair
     return_val = []
     # synonym_dicts: eg: 1: 'sinh', 2: 'TenBac' (each dict is instance of SynonymSet obj)
     # ['Bác', 'sinh', 'năm', '1890']
-    words_segmented_sentences = word_segmentation_no_join(org_sentence)
+    words_segmented_sentences = []
+    if not word_segemented:
+        words_segmented_sentences = word_segmentation_no_join(org_sentence)
+    else:
+        words_segmented_sentences = [org_sentence]
     for words_segmented_sentence in words_segmented_sentences:
         # synonym_replaceable_pos: [(0,2), (1,1)]
         synonym_replaceable_pos = get_synonym_replaceable_pos(words_segmented_sentence, synonym_dicts)
@@ -122,33 +133,158 @@ def get_synonym_dicts(word, synonym_dicts):
     #  Use word embedding for sentiment analyze for more accurate in getting right synonym set
     #  in case of multiple meaning word may belong to multiple synonym set
     #  Currently get all synonym sets thats have the word
-    return [sd for sd in synonym_dicts if word in sd.words]
+    return [synonym_dicts[sid] for sid in synonym_dicts if word in synonym_dicts[sid].words]
 
 
 def analyze_critical_parts(intent, sentence):
-    intent_critical_datas = intent.critical_datas
+    # Word POS tagging
+    pos_tag = rdrsegmenter.pos_tag(sentence)
     # Obtain named entity in the sentence
     ner = named_entity_reconize(sentence)
+    # Data for the process
+    intent_critical_datas = intent.critical_datas
+    tokenized_sentence = word_segmentation(sentence)
+    tokenized_sentence_list = tokenized_sentence.split()
+    normalized_sentence_list = [w[0] for w in pos_tag if w[0] not in exclude_words and w[1] not in exclude_pos_tag]
+    normalized_sentence = ' '.join(normalized_sentence_list)
+
+    # Nothing to analyze
     if len(ner) == 0 and len(intent_critical_datas) == 0:
         return True
-    # Word POS tagging
-    pos_tag = rdrsegmenter.pos_tag(ner)
 
-    # Map for compare named entities in sentence with entities in intent
-    ner_compare_map = {}
+    # Sentence structure
+    sentence_struct = [p[1] for p in pos_tag]
+    # Compare named entities in sentence with entities in intent
+    check_flag = True
     for typ in ner_types:
-        entities_in_sentence = [e[1] for e in ner if e[0] == typ]
-        entities_in_intent = [e[1] for e in intent_critical_datas if e[0] == typ]
-        # Number of entity not matching return not match
-        if len(entities_in_sentence) != len(entities_in_intent):
-            return False
-        # Compare entities in sentence and intent
-        for ie in entities_in_intent:
-            # TODO
-            pass
-        ner_compare_map[typ] = (entities_in_sentence, entities_in_intent)
+        if not check_flag:
+            break
+        entities_in_sentence = [(e[1], tokenized_sentence_list.index(e[1]), tokenized_sentence_list.index(e[1])) for e
+                                in ner if e[0] == typ]
+        if len(entities_in_sentence) > 0:
+            print(entities_in_sentence)
+        else:
+            print('No', typ, 'entity in sentence')
+        entities_in_intent = []
+        for c in intent_critical_datas:
+            for c1 in c:
+                if c1[0] == typ:
+                    entities_in_intent.append(c)
+                    break
+        if len(entities_in_intent) > 0:
+            print(entities_in_intent)
+        else:
+            print('No', typ, 'entity in intent')
 
-    return True
+        # Check by extracted NER by VNCoreNLP
+        eit_1 = entities_in_intent[:]
+        eis_1 = entities_in_sentence[:]
+        for eit in eit_1:
+            # get components structure
+            struct = [c[0] for c in eit]
+            # get main component index
+            main_pos = struct.index(typ)
+            # synonyms of main component
+            synonyms = get_synonym_dicts(eit[main_pos][1], intent.synonym_sets)
+            # get corresponse part in the sentence
+            # (word, entity start pos, entity end pos)
+            corresponse_part = None
+            for e in eis_1:
+                for syn in synonyms:
+                    if e[0] in syn.words:
+                        corresponse_part = e
+                        break
+            # In case VNCoreNLP pos-tagging not working right, compare string instead
+            if not corresponse_part:
+                tokenized_sentence_list_lower = [w.lower() for w in tokenized_sentence_list]
+                # sentence_list_lower = [w.lower() for w in sentence_list]
+                if typ == 'MISC':
+                    content = [part.split(':')[1] for part in eit[main_pos][1].split('+') if
+                               part.split(':')[0] not in exclude_pos_tag]
+                    content = [c for c in content if c not in exclude_words]
+                    print(content)
+                    similaries = generate_similary_sentences((content, intent.synonym_sets), word_segemented=True)
+                    print(similaries)
+                    for sim in similaries:
+                        sim = sim.lower()
+                        if sim in normalized_sentence.lower():
+                            print('Found MISC')
+                            sim_list = sim.split()
+                            start_idx = tokenized_sentence_list_lower.index(sim_list[0])
+                            end_idx = tokenized_sentence_list_lower.index(sim_list[len(sim_list) - 1])
+                            corresponse_part = (sim, start_idx, end_idx)
+                            break
+                else:
+                    for syn in synonyms:
+                        for word in syn.words:
+                            if word.lower() in sentence.lower():
+                                corresponse_part = (
+                                    word,
+                                    tokenized_sentence_list_lower.index(word.lower()),
+                                    tokenized_sentence_list_lower.index(word.lower())
+                                )
+            # Critical part still not found -> not same intent
+            if not corresponse_part:
+                check_flag = False
+                break
+            # Critical data existing, but need to check grammar structure too
+            for pattern in critical_data_ng_patterns:
+                pattern_struct = pattern[0].split(MINUS)
+                start_pos = corresponse_part[1]
+                end_pos = corresponse_part[2]
+                rel_pos_main = pattern_struct.index('main')
+                rel_pos_end = len(pattern_struct) - 1
+                tmp = start_pos - rel_pos_main
+                left_pos = tmp if tmp >= 0 else 0
+                tmp = end_pos + (rel_pos_end - rel_pos_main)
+                right_pos = tmp if tmp <= (len(tokenized_sentence_list) - 1) else (len(tokenized_sentence_list) - 1)
+                # walk to left
+                struct_ok = True
+                for i in range(start_pos - left_pos):
+                    # If Preposition so skip
+                    if pattern_struct[rel_pos_main - (i + 1)] == 'E' and sentence_struct[start_pos - (i + 1)] == 'E':
+                        continue
+                    # Out of sentence, grammar error
+                    elif sentence_struct[rel_pos_main - i] == 'E' and (start_pos - (i + 1)) < 0:
+                        check_flag = False
+                        break
+                    # NG pattern matching, change flag to False but keep walking to the end
+                    elif ((pattern_struct[rel_pos_main - (i + 1)] != 'any' and pattern_struct[rel_pos_main - (i + 1)] ==
+                           sentence_struct[start_pos - (i + 1)])
+                          or (pattern_struct[rel_pos_main - (i + 1)] == 'any')):
+                        struct_ok = False
+                    # NG pattern not match, sentence is ok
+                    elif pattern_struct[rel_pos_main - (i + 1)] != 'any' and pattern_struct[rel_pos_main - (i + 1)] != \
+                            sentence_struct[start_pos - (i + 1)]:
+                        struct_ok = True
+                        break
+                if not struct_ok:
+                    check_flag = struct_ok
+                    break
+                # walk to right
+                for i in range(right_pos - end_pos):
+                    # If Preposition so skip
+                    if pattern_struct[rel_pos_main + (i + 1)] == 'E' and sentence_struct[end_pos + (i + 1)] == 'E':
+                        continue
+                    # Out of sentence, grammar error
+                    elif sentence_struct[start_pos + i] == 'E' and (end_pos + (i + i)) > (len(tokenized_sentence_list) - 1):
+                        check_flag = False
+                        break
+                    # NG pattern matching, change flag to False but keep walking to the end
+                    elif ((pattern_struct[rel_pos_main + (i + 1)] != 'any' and pattern_struct[rel_pos_main + (i + 1)] ==
+                           sentence_struct[end_pos + (i + 1)])
+                          or (pattern_struct[rel_pos_main + (i + 1)] == 'any')):
+                        struct_ok = False
+                    # NG pattern not match, sentence is ok
+                    elif pattern_struct[rel_pos_main + (i + 1)] != 'any' and pattern_struct[rel_pos_main + (i + 1)] != \
+                            sentence_struct[end_pos + (i + 1)]:
+                        struct_ok = True
+                        break
+                if not struct_ok:
+                    check_flag = struct_ok
+                    break
+
+    return check_flag
 
 
 def is_same_intent(intent, sentence):

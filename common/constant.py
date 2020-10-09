@@ -4,18 +4,23 @@ PERIOD = '.'
 COLON = ':'
 COMMA = ','
 PLUS = '+'
+MINUS = '-'
 SPACE = ' '
 UNDERSCORE = '_'
 # Encoding
 UTF8 = 'utf-8'
 UTF16 = 'utf-16'
-# Other
+# Language processing
 VNCORENLP = 'vncorenlp'
-BERT = 'bert'
 NAMED_ENTITY_TYPES = 'named_entity_types'
-CRITICAL_DATA_PATTERNS = 'critical_data_check_pattern'
+CRITICAL_DATA_NG_PATTERNS = 'critical_data_ng_pattern'
+EXCLUDE_POS_TAG = 'exclude_pos_tag'
+EXCLUDE_WORDS = 'exclude_word'
+# Other
+BERT = 'bert'
 IDX2OBJ = 'idx2obj'
 OBJ2IDX = 'obj2idx'
+# Data paths
 CONFIG = 'config'
 CONFIG_PATH = "config.json"
 QUESTION_TYPE_DATA_PATH = 'question_type_data_path'

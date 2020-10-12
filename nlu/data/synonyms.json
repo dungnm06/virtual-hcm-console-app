@@ -1,0 +1,231 @@
+{
+  "1": {
+    "meaning": "biểu hiện",
+    "type": "V",
+    "words": [
+      "viết",
+      "thể_hiện",
+      "biểu_hiện",
+      "ghi",
+      "báo_cáo",
+      "chỉ ra",
+      "nói",
+      "bày_tỏ",
+      "hiển_thị",
+      "diễn_đạt"
+    ]
+  },
+
+  "2": {
+    "meaning": "viết",
+    "type": "V",
+    "words": ["viết", "ghi", "chép", "ghi_chép"]
+  },
+
+  "3": {
+    "meaning": "phát biểu",
+    "type": "V",
+    "words": ["nói", "trình_bày", "tuyên_bố", "phát_biểu"]
+  },
+
+  "4": {
+    "meaning": "sinh",
+    "type": "V",
+    "words": ["đẻ", "sinh", "ra_đời"]
+  },
+
+  "5": {
+    "meaning": "chết",
+    "type": "V",
+    "words": [
+      "chết",
+      "băng_hà",
+      "bỏ_xác",
+      "chầu chúa",
+      "chầu phật",
+      "chầu_trời",
+      "đi",
+      "khuất",
+      "mất",
+      "nghẻo",
+      "qua_đời",
+      "quy_tiên",
+      "tạ_thế",
+      "tắt_thở",
+      "từ_trần",
+      "yên_nghỉ"
+    ]
+  },
+
+  "6": {
+    "meaning": "đầu tiên",
+    "type": "A",
+    "words": ["đầu_tiên", "ban_đầu", "thủa đầu", "thửa đầu"]
+  },
+
+  "7": {
+    "meaning": "diễn ra",
+    "type": "V",
+    "words": ["diễn ra", "tổ_chức", "tiến_hành"]
+  },
+
+  "8": {
+    "meaning": "thành lập",
+    "type": "V",
+    "words": [
+      "tổ_chức",
+      "thành_lập",
+      "tạo",
+      "tạo_thành",
+      "sáng_lập",
+      "thiết_lập",
+      "gây_dựng"
+    ]
+  },
+  "9": {
+    "meaning": "nhóm",
+    "type": "N",
+    "words": ["đám", "lũ", "tốp", "đoàn_thể", "đoàn", "nhóm", "bè", "tổ chức"]
+  },
+  "10": {
+    "meaning": "thời kì đầu",
+    "type": "N",
+    "words": [
+      "thủa đầu",
+      "ban_đầu",
+      "lúc đầu",
+      "thời_gian đầu",
+      "giai_đoạn đầu",
+      "thời_kì đầu",
+      "đầu_tiên",
+      "thửa đầu"
+    ]
+  },
+  "11": {
+    "meaning": "khó",
+    "type": "A",
+    "words": ["khó_khăn", "khó", "gian_nan"]
+  },
+  "12": {
+    "meaning": "thống nhất",
+    "type": "V",
+    "words": ["hợp_thành", "thống_nhất", "kết_hợp", "tập_trung"]
+  },
+  "13": {
+    "meaning": "lôi cuốn",
+    "type": "V",
+    "words": ["hấp_dẫn", "lôi_cuốn", "hút_hồn", "thu_hút"]
+  },
+  "14": {
+    "meaning": "tham gia",
+    "type": "V",
+    "words": ["gia_nhập", "tham_gia", "tham_dự", "vào", "dự vào"]
+  },
+  "15": {
+    "meaning": "thành",
+    "type": "V",
+    "words": ["trở_nên", "thành", "trở_thành"]
+  },
+  "16": {
+    "meaning": "trong",
+    "type": "E",
+    "words": ["ở", "trong", "ở trong", "bên trong", "nội", "nội trong"]
+  },
+  "17": {
+    "meaning": "gồm",
+    "type": "V",
+    "words": ["bao_gồm", "gồm", "gồm có", "bao_hàm"]
+  },
+  "18": {
+    "meaning": "giao",
+    "type": "V",
+    "words": ["giao_phó", "giao cho", "giao", "điều"]
+  },
+  "19": {
+    "meaning": "thư",
+    "type": "N",
+    "words": ["bức thư", "thư"]
+  },
+  "20": {
+    "meaning": "ta",
+    "type": "P",
+    "words": ["mình", "ta", "chúng_ta", "chúng_mình"]
+  },
+  "21": {
+    "meaning": "công nhận",
+    "type": "V",
+    "words": ["nhận", "công_nhận", "thừa_nhận", "xác_nhận"]
+  },
+  "22": {
+    "meaning": "chính",
+    "type": "A",
+    "words": ["chính", "chánh", "tiêu_biểu", "chủ_yếu"]
+  },
+  "23": {
+    "meaning": "kết quả",
+    "type": "N",
+    "words": ["kết_quả", "kết_cuộc", "kết_cục", "cuối_cùng"]
+  },
+  "24": {
+    "meaning": "họp",
+    "type": "V",
+    "words": ["gặp", "hội_họp", "tập_hợp", "họp", "gặp_mặt", "gặp_gỡ"]
+  },
+  "25": {
+    "meaning": "thái độ",
+    "type": "N",
+    "words": ["ý_kiến", "thái_độ", "suy_nghĩ", "hành_xử"]
+  },
+  "26": {
+    "meaning": "đối với",
+    "type": "E",
+    "words": ["đối_với", "với", "về", "về phía"]
+  },
+  "27": {
+    "meaning": "thực hư",
+    "type": "A",
+    "words": ["sự_thật", "sự_thực", "thật giả", "thực_hư"]
+  },
+  "28": {
+    "meaning": "tin đồn",
+    "type": "N",
+    "words": ["tin_đồn", "tiếng đồn", "tin_tức", "tin"]
+  },
+  "29": {
+    "meaning": "đề cập",
+    "type": "V",
+    "words": [
+      "đề_cập",
+      "nói",
+      "viết",
+      "nhắc tới",
+      "đưa ra",
+      "nêu ra",
+      "trình_bày",
+      "nhắc đến",
+      "diễn_đạt"
+    ]
+  },
+  "30": {
+    "meaning": "thành viên",
+    "type": "N",
+    "words": ["thành_viên", "người", "thành_phần", "hội_viên"]
+  },
+  "31": {
+    "meaning": "nhi đồng",
+    "type": "N",
+    "words": ["nhi_đồng", "thiếu_nhi", "trẻ_con"]
+  },
+  "32":
+  {
+      "type": "Np",
+      "meaning": "Thông tấn Reuter",
+      "words": ["Reuter", "Roitơ"]
+  },
+  "33":
+  {
+      "type": "Np",
+      "meaning": "Mao Trạch Đông",
+      "words": ["Mao", "Mao_Trạch_Đông"]
+  }
+}

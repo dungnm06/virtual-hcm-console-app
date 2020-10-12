@@ -85,7 +85,14 @@
   "9": {
     "meaning": "nhóm",
     "type": "N",
-    "words": ["đám", "lũ", "tốp", "đoàn_thể", "đoàn", "nhóm", "bè", "tổ chức", "đội"]
+    "words": [
+      "tốp",
+      "đoàn_thể",
+      "đoàn",
+      "nhóm",
+      "tổ chức",
+      "đội"
+    ]
   },
   "10": {
     "meaning": "thời kì đầu",
@@ -229,161 +236,108 @@
   "35": {
     "meaning": "dạy",
     "type": "V",
-    "words": [
-      "dạy dỗ",
-      "dạy",
-      "chỉ bảo",
-      "bảo",
-      "dạy bảo"
-    ]
+    "words": ["dạy_dỗ", "dạy", "chỉ_bảo", "bảo", "dạy_bảo"]
   },
   "36": {
     "meaning": "điều",
     "type": "N",
-    "words": [
-      "điều",
-      "thứ",
-      "câu"
-    ]
+    "words": ["điều", "thứ", "câu"]
   },
   "37": {
     "meaning": "chúc mừng",
     "type": "V",
-    "words": [
-      "chúc_mừng",
-      "mừng",
-      "chúc",
-      "cầu chúc"
-    ]
+    "words": ["chúc_mừng", "mừng", "chúc", "cầu_chúc"]
   },
   "38": {
     "meaning": "vũ khí",
-    "type": "V",
-    "words": [
-      "vũ khí",
-      "quân trang",
-      "binh khí",
-      "vũ trang"
-    ]
+    "type": "N",
+    "words": ["vũ_khí", "quân_trang", "binh_khí", "vũ_trang"]
   },
   "39": {
     "meaning": "nhiệm vụ",
     "type": "N",
-    "words": [
-      "nhiệm_vụ",
-      "công việc",
-      "việc",
-      "trách nhiệm"
-    ]
+    "words": ["nhiệm_vụ", "công_việc", "việc", "trách_nhiệm"]
   },
   "40": {
     "meaning": "cải tổ",
     "type": "V",
-    "words": [
-      "cải tổ",
-      "cải cách",
-      "cải thiện",
-      "tổ chức lại"
-    ]
+    "words": ["cải_tổ", "cải_cách", "cải_thiện", "tổ_chức lại"]
   },
   "41": {
     "meaning": "chi nhánh",
     "type": "N",
-    "words": [
-      "chi_nhánh",
-      "nhánh"
-    ]
+    "words": ["chi_nhánh", "nhánh"]
   },
   "42": {
     "meaning": "chính thức",
     "type": "A",
-    "words": [
-      "chánh thức",
-      "chính thức"
-    ]
+    "words": ["chánh thức", "chính_thức"]
   },
   "43": {
     "meaning": "công việc",
     "type": "N",
-    "words": [
-      "công_việc",
-      "việc",
-      "việc làm",
-      "hoạt động"
-    ]
+    "words": ["công_việc", "việc", "việc_làm", "hoạt_động"]
   },
   "44": {
     "meaning": "nội dung",
     "type": "N",
-    "words": [
-      "đại ý",
-      "nội dung",
-      "ý chính"
-    ]
+    "words": ["đại_ý", "nội_dung", "ý chính"]
   },
   "45": {
     "meaning": "bài",
     "type": "N",
-    "words": [
-      "bài",
-      "buổi",
-      "cuộc"
-    ]
+    "words": ["bài", "buổi", "cuộc"]
   },
   "46": {
     "meaning": "nói chuyện",
     "type": "V",
-    "words": [
-      "nói chuyện",
-      "trò chuyện",
-      "đàm thoại",
-      "hội đàm"
-    ] 
+    "words": ["nói_chuyện", "trò_chuyện", "đàm_thoại", "hội_đàm"]
   },
   "47": {
     "meaning": "bế mạc",
     "type": "V",
-    "words": [
-      "bế mạc",
-      "kết thúc",
-      "cuối cùng"
-    ]
+    "words": ["bế_mạc", "kết_thúc"]
   },
   "48": {
     "meaning": "cán bộ",
-    "type": "V",
-    "words": [
-      "cán bộ",
-      "công chức",
-      "viên chức",
-      "đồng chí"
-    ]
+    "type": "N",
+    "words": ["cán_bộ", "công_chức", "viên_chức", "đồng_chí"]
   },
   "49": {
     "meaning": "gửi",
     "type": "V",
-    "words": [
-      "gửi",
-      "gởi"
-    ]
+    "words": ["gửi", "gởi"]
   },
   "50": {
     "meaning": "chiến sĩ",
     "type": "N",
     "words": [
-      "chiến sĩ",
-      "chiến binh",
+      "chiến_sĩ",
+      "chiến_binh",
       "người lính",
       "lính",
-      "binh sĩ",
-      "bộ đội"
+      "binh_sĩ",
+      "bộ_đội"
     ]
   },
   "51": {
     "meaning": "dân quân",
-    "type":  "N",
-    "words": [
-      "dân quân"
-    ]
+    "type": "N",
+    "words": ["dân_quân"]
+  },
+  "52": {
+    "meaning": "điền chủ",
+    "type": "N",
+    "words": ["chủ đất", "điền_chủ", "địa_chủ", "chủ ruộng"]
+  },
+  "53": {
+    "meaning": "bản",
+    "type": "Nc",
+    "words": ["bản", "bản_thảo", "biên_bản", "tờ"]
+  },
+  "54": {
+    "meaning": "ý kiến",
+    "type": "N",
+    "words": ["ý_kiến", "quan_điểm"]
   }
 }

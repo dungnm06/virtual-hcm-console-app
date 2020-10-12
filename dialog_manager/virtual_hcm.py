@@ -2,7 +2,7 @@ from utils.files import *
 from nlu.question_type_classifier import QuestionTypeClassifier
 from nlu.intent_classifier import IntentClassifier
 from nlu.model.intent import *
-from nlu.language_processing import is_same_intent
+from nlu.language_processing import analyze_sentence_components
 from .action_type import *
 
 
@@ -32,7 +32,8 @@ class VirtualHCMChatbot(object):
     def get_last_state(self):
         return self.state_tracker[len(self.state_tracker)-1]
 
-    def __decide_action(self, chat_input, intent, types, last_state):
+    @staticmethod
+    def __decide_action(chat_input, intent, types, last_state):
         """Combines intent and question type recognition to decide bot action"""
         # print(last_state)
         if intent.intent_id == last_state[0].intent_id and last_state[2] == AWAIT_CONFIRMATION:
@@ -41,7 +42,7 @@ class VirtualHCMChatbot(object):
             else:
                 return CONFIRMATION_NG
         else:
-            if is_same_intent(intent, chat_input):
+            if analyze_sentence_components(intent, chat_input):
                 return ANSWER
             else:
                 return AWAIT_CONFIRMATION

@@ -285,14 +285,23 @@ def analyze_critical_parts(intent, sentence):
     return check_flag
 
 
-def analyze_sentence_components(intent, sentence):
-    # TODO
+def analyze_verb_components(intent, sentence):
+
     return True
 
 
-def is_same_intent(intent, sentence):
+def analyze_sentence_components(intent, sentence):
+    # Word POS tagging
+    pos_tag = pos_tagging(sentence)
+    # Obtain named entity in the sentence
+    ner = named_entity_reconize(sentence)
+    # Data for the process
+    intent_critical_datas = intent.critical_datas
+    tokenized_sentence = word_segmentation(sentence)
+    tokenized_sentence_list = tokenized_sentence.split()
+
     flag = analyze_critical_parts(intent, sentence)
     if not flag:
         return flag
-    flag = analyze_sentence_components(intent, sentence)
+    flag = analyze_verb_components(intent, sentence)
     return flag

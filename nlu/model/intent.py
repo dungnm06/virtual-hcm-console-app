@@ -16,7 +16,7 @@ INTENT_CORRESPONDING_DATAS = 'Corresponding Data'
 INTENT_CRITICAL_DATAS = 'CriticalData'
 INTENT_REFERENCE_DOC_ID = 'Reference Document ID'
 INTENT_REFERENCE_DOC_PAGE = 'Page'
-INTENT_SENTENCE_COMPONENTS = 'Verb Of Questions'
+INTENT_VERB_COMPONENTS = 'Verb Of Questions'
 INTENT_SYNONYM_IDS = 'Synonyms ID'
 
 
@@ -103,14 +103,15 @@ def load_from_data(config):
         if not pd.isnull(rdp):
             intent.reference_doc_page = int() if isInt(rdp) else rdp
         # Sentence components
-        sc = data[INTENT_SENTENCE_COMPONENTS]
+        sc = data[INTENT_VERB_COMPONENTS]
         if not pd.isnull(sc):
-            sentence_components = data[INTENT_SENTENCE_COMPONENTS].split(HASH)
-            # print(sentence_components)
-            if sentence_components[0] == 'empty':
-                sentence_components = []
-            else:
-                sentence_components = [(c.split(COLON)[0], c.split(COLON)[1]) for c in sentence_components]
+            sc = sc.split(HASH)
+            sentence_components = []
+            for c in sc:
+                if c == 'empty':
+                    sentence_components.append([])
+                else:
+                    sentence_components.append([(c1.split(COLON)[0], c1.split(COLON)[1]) for c1 in c.split(PLUS)])
             # print(sentence_components)
             intent.sentence_components = sentence_components
         # Synonym words dictionary

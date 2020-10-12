@@ -52,11 +52,14 @@ class Intent:
         self.synonym_sets = synonym_sets
 
 
-def load_from_data(datapath):
+def load_from_data(config):
     intent_maps = {}
-    intent_datas = pd.read_csv(datapath[INTENT_MAP_PATH])
-    f = open(datapath[INTENT_MAP_PATH], encoding=UTF8)
-    synonym_dictionary = json.load(f)
+    intent_datas = pd.read_csv(config[INTENT_MAP_PATH])
+    f = open(config[SYNONYMS_FILE_PATH], encoding=UTF8)
+    f2 = open(config[GLOBAL_SYNONYMS_FILE_PATH], encoding=UTF8)
+    # Synonyms
+    synonyms = json.load(f)
+    global_synonyms = json.load(f2)
     for idx, data in intent_datas.iterrows():
         intent = Intent()
         # ID
@@ -97,28 +100,8 @@ def load_from_data(datapath):
         sc = data[INTENT_SENTENCE_COMPONENTS]
         if not pd.isnull(sc):
             sentence_components = data[INTENT_SENTENCE_COMPONENTS].split(HASH)
-            type_value_pairs = {}
-            for component in sentence_components:
-                # print(component)
-                smaller_parts = component.split(COMMA)
-                # print(smaller_parts)
-                for p in smaller_parts:
-                    split_idx = p.find(COLON)
-                    type_value_pairs = {p[:split_idx]: p[(split_idx + 1):]}
-                    # print(type_value_pairs)
-                    for word_type in type_value_pairs:
-                        # Noun phrases handling
-                        if word_type.lower() == 'ns':
-                            noun_phrases = type_value_pairs[word_type][1:(len(type_value_pairs[word_type]) - 1)].split(
-                                PLUS)
-                            # print(noun_phrases)
-                            tmp_dict = {}
-                            for part in noun_phrases:
-                                spart = part.split(COLON)
-                                tmp_dict[spart[0]] = spart[1]
-                            # print(tmp_dict)
-                            type_value_pairs[word_type] = tmp_dict
-            intent.sentence_components = type_value_pairs
+            sentence_components = [(c.split(COLON)[0], c.split(COLON)[1]) for c in sentence_components]
+            intent.sentence_components = sentence_components
         # Synonym words dictionary
         synonym_ids = data[INTENT_SYNONYM_IDS]
         if not pd.isnull(synonym_ids):
@@ -126,12 +109,20 @@ def load_from_data(datapath):
             for s in synonym_ids:
                 synonym_set = SynonymSet()
                 synonym_set.id = int(s)
-                synonym_set.meaning = synonym_dictionary[s][SYNONYM_MEANING]
-                synonym_set.words = synonym_dictionary[s][SYNONYM_WORDS]
+                synonym_set.meaning = synonyms[s][SYNONYM_MEANING]
+                synonym_set.words = synonyms[s][SYNONYM_WORDS]
                 intent.synonym_sets[s] = synonym_set
+        # Add all global synonyms to intent
+        for gs in global_synonyms:
+            synonym_set = SynonymSet()
+            synonym_set.id = int(gs)
+            synonym_set.meaning = global_synonyms[gs][SYNONYM_MEANING]
+            synonym_set.words = global_synonyms[gs][SYNONYM_WORDS]
+            intent.synonym_sets[gs] = synonym_set
         # Push to intents map
         intent_maps[intent.intent] = intent
     # Close file reading
     f.close()
+    f2.close()
 
     return intent_maps

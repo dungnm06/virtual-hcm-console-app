@@ -22,9 +22,8 @@ class VirtualHCMChatbot(object):
         self.type2idx, self.idx2type = self.question_type_reconizer.load()
         # Answer generator
         self.answer_generator = AnswerGenerator(self)
-
         # Load intent data
-        self.intent_datas = load_from_data(self.config[INTENT_DATA_PATH])
+        self.intent_datas = load_from_data(self.config)
 
     def __regis_history(self, intent, types, action):
         self.state_tracker.append((intent, types, action))

@@ -7,6 +7,7 @@ from common.constant import *
 # Mapping
 INTENT_ID = 'ID'
 INTENT_NAME = 'Intent'
+INTENT_FULL_NAME = 'IntentFullName'
 INTENT_QUESTIONS = 'Questions'
 INTENT_RAW_DATA = 'Raw data'
 INTENT_BASE_RESPONSE = 'BaseResponse'
@@ -15,12 +16,12 @@ INTENT_CORRESPONDING_DATAS = 'Corresponding Data'
 INTENT_CRITICAL_DATAS = 'CriticalData'
 INTENT_REFERENCE_DOC_ID = 'Reference Document ID'
 INTENT_REFERENCE_DOC_PAGE = 'Page'
-INTENT_SENTENCE_COMPONENTS = 'Components Of Questions'
+INTENT_SENTENCE_COMPONENTS = 'Verb Of Questions'
 INTENT_SYNONYM_IDS = 'Synonyms ID'
 
 
 class Intent:
-    def __init__(self, intent_id=0, intent='', questions=None, raw_data='', base_response='',
+    def __init__(self, intent_id=0, intent='', name='', questions=None, raw_data='', base_response='',
                  intent_types=None, corresponding_datas=None, critical_datas=None,
                  reference_doc_id=0, reference_doc_page=0, sentence_components=None, synonym_sets=None):
         # Default argument value is mutable
@@ -40,6 +41,7 @@ class Intent:
         # Assign attributes
         self.intent_id = intent_id
         self.intent = intent
+        self.name = name
         self.questions = questions
         self.raw_data = raw_data
         self.base_response = base_response
@@ -54,7 +56,7 @@ class Intent:
 
 def load_from_data(config):
     intent_maps = {}
-    intent_datas = pd.read_csv(config[INTENT_MAP_PATH])
+    intent_datas = pd.read_csv(config[INTENT_DATA_PATH])
     f = open(config[SYNONYMS_FILE_PATH], encoding=UTF8)
     f2 = open(config[GLOBAL_SYNONYMS_FILE_PATH], encoding=UTF8)
     # Synonyms
@@ -66,10 +68,14 @@ def load_from_data(config):
         intent.intent_id = int(data[INTENT_ID])
         # Intent name
         intent.intent = data[INTENT_NAME]
+        # Intent full name
+        intent.name = data[INTENT_FULL_NAME]
         # Questions
         intent.questions = [q.strip() for q in data[INTENT_QUESTIONS].split(HASH)]
         # Raw data
         intent.raw_data = data[INTENT_RAW_DATA]
+        # Base response
+        intent.base_response = data[INTENT_BASE_RESPONSE]
         # Intent types
         intent.intent_types = [int(t) for t in data[INTENT_INTENT_TYPES].split(COMMA)]
         # Corresponding datas
@@ -100,7 +106,12 @@ def load_from_data(config):
         sc = data[INTENT_SENTENCE_COMPONENTS]
         if not pd.isnull(sc):
             sentence_components = data[INTENT_SENTENCE_COMPONENTS].split(HASH)
-            sentence_components = [(c.split(COLON)[0], c.split(COLON)[1]) for c in sentence_components]
+            # print(sentence_components)
+            if sentence_components[0] == 'empty':
+                sentence_components = []
+            else:
+                sentence_components = [(c.split(COLON)[0], c.split(COLON)[1]) for c in sentence_components]
+            # print(sentence_components)
             intent.sentence_components = sentence_components
         # Synonym words dictionary
         synonym_ids = data[INTENT_SYNONYM_IDS]

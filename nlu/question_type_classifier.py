@@ -13,7 +13,7 @@ import pandas as pd
 # numpy
 import numpy as np
 # Text processing utils
-from .language_processing import batch_word_segmentation
+from .language_processing import *
 from sklearn.preprocessing import MultiLabelBinarizer
 # Constant
 from common.constant import *
@@ -120,14 +120,14 @@ class QuestionTypeClassifier:
             OBJ2IDX: self.type2id,
             IDX2OBJ: self.id2type
         }
-        pickle_file(map_datas, QUESTION_TYPE_MAP_PATH)
+        pickle_file(map_datas, QUESTION_TYPE_MAP_FILE_PATH)
 
     def load(self):
         datapath = self.config[QUESTION_TYPE_MODEL_PATH]
         # Max sentence length
         self.input_sentence_length = self.config[MAX_SENTENCE_LENGTH]
         # Intent maps
-        type_maps = unpickle_file(self.config[QUESTION_TYPE_MAP_PATH])
+        type_maps = unpickle_file(self.config[QUESTION_TYPE_MAP_FILE_PATH])
         self.type2id = type_maps[OBJ2IDX]
         self.id2type = type_maps[IDX2OBJ]
         # Label Binarizer
@@ -142,7 +142,7 @@ class QuestionTypeClassifier:
 
     def predict(self, input_query):
         print('Predict:')
-        x = batch_word_segmentation(input_query)
+        x = word_segmentation(input_query)
         print(x)
         x = self.tokenizer(
             text=x,
@@ -160,13 +160,13 @@ class QuestionTypeClassifier:
         # x_tensor = tf.constant(np.concatenate((ids, atm), axis=0))
         # print(x_tensor)
         preds = self.model.predict(input_dict)
-        print(preds['type'])
+        # print(preds['type'])
         threshold = float(self.config[PREDICT_THRESHOLD])
         preds = np.array([[1 if acc > threshold else 0 for acc in p] for p in preds['type']])
         preds = self.label_binarizer.inverse_transform(preds)
-        for predict in preds:
-            print('Predicted types: ', ', '.join(predict))
-        return preds
+        # for predict in preds:
+        print('Predicted types: ', ', '.join(preds[0]))
+        return list(preds[0])
 
     def build_model(self, intents_count):
         ###################################

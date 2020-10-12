@@ -14,6 +14,7 @@ import pandas as pd
 import numpy as np
 # Text processing utils
 from .language_processing import batch_word_segmentation
+from .language_processing import generate_similary_sentences
 from utils.files import *
 # Constant
 from common.constant import *
@@ -31,7 +32,7 @@ class IntentClassifier:
         self.intent_to_idx = {}
         self.idx_to_intent = {}
 
-    def train(self, sequence_length=40,
+    def train(self, sequence_length=30,
               batch_size=32, epochs=50, rate=5e-5, epsilon=1e-8):
         ###################################
         # --------- Import data --------- #
@@ -39,18 +40,32 @@ class IntentClassifier:
         data_path = self.config[INTENT_DATA_PATH]
         data = pd.read_csv(data_path)
         # Select required columns
-        data = data[['Intent', 'Questions']]
-        # Remove a row if any of the three columns are missing
-        data = data.dropna()
+        data = data[['Intent', 'Questions', 'Synonyms ID']]
         # Train data prepare
         x = []
         y = []
         # Split into x and y list from dataset
-        for questions, intent in zip(data['Questions'], data['Intent']):
+        # Load synonyms map
+        f = open('/content/drive/My Drive/synonyms.json', encoding='utf-8')
+        f2 = open('/content/drive/My Drive/global_synonyms.json', encoding='utf-8')
+        intent_synonyms = json.load(f)
+        global_synonyms = json.load(f2)
+        for questions, intent, synonyms in zip(data['Questions'], data['Intent'], data['Synonyms ID']):
             q = questions.split('#')
+            s = []
+            if not pd.isnull(synonyms):
+                s = synonyms.split(',')
+            syn_dicts = {}
+            for d in s:
+                syn_dicts[d] = intent_synonyms[d]
+            for d in global_synonyms:
+                syn_dicts[d] = global_synonyms[d]
             for q1 in q:
-                x.append(q1.strip())
-                y.append(intent)
+                all_similary_questions = generate_similary_sentences((q1.strip(), syn_dicts))
+                x.extend(all_similary_questions)
+                y.extend([intent] * len(all_similary_questions))
+        f.close()
+        f2.close()
         # Intent mapping for future uses
         intents_count = Counter(y)
         self.intent_to_idx = {intent: i for i, intent in enumerate(intents_count)}
@@ -78,28 +93,7 @@ class IntentClassifier:
 
         ###################################
         # ------- Build the model ------- #
-        # TF Keras documentation: https://www.tensorflow.org/api_docs/python/tf/keras/Model
-        # Load the MainLayer
-        bert = self.transformer_model.layers[0]
-        # Build your model input
-        input_ids = Input(shape=(sequence_length,), name='input_ids', dtype='int32')
-        token_ids = Input(shape=(sequence_length,), name='token_type_ids', dtype='int32')
-        attention_masks = Input(shape=(sequence_length,), name='attention_mask', dtype='int32')
-        inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
-        # Load the Transformers BERT model as a layer in a Keras model
-        bert_model = bert(inputs)[1]
-        dropout = Dropout(self.bert_config.hidden_dropout_prob, name='pooled_output')
-        pooled_output = dropout(bert_model)
-        # Output layer
-        intent = Dense(units=len(intents_count),
-                       kernel_initializer=TruncatedNormal(stddev=self.bert_config.initializer_range), name='intent')(
-            pooled_output)
-        outputs = {'intent': intent}
-        # And combine it all in a model object
-        model = Model(inputs=inputs, outputs=outputs, name='Intent_Classifier_BERT_MultiClass')
-
-        # Take a look at the model
-        model.summary()
+        model = self.build_model(len(intents_count))
 
         ###################################
         # ------- Train the model ------- #
@@ -138,15 +132,17 @@ class IntentClassifier:
 
     def load(self):
         datapath = self.config[INTENT_MODEL_PATH]
-        # Pretrained model
-        print('(IntentClassifier) Loading pretrained model from: ', datapath)
-        self.model = tf.keras.models.load_model(datapath)
-        # Max sentence length
-        self.input_sentence_length = self.model.layers[0].output_shape[0][1]
         # Intent maps
         intent_maps = unpickle_file(self.config[INTENT_MAP_PATH])
         self.intent_to_idx = intent_maps[OBJ2IDX]
         self.idx_to_intent = intent_maps[IDX2OBJ]
+        # Max sentence length
+        self.input_sentence_length = self.config[MAX_SENTENCE_LENGTH]
+        # Pretrained model
+        print('(IntentClassifier) Loading pretrained model from: ', datapath)
+        self.model = self.build_model(len(self.intent_to_idx))
+        self.model.load_weights(self.config[INTENT_MODEL_PATH])
+
         return self.intent_to_idx, self.idx_to_intent
 
     def predict(self, input_query):
@@ -183,5 +179,33 @@ class IntentClassifier:
         # Load BERT tokenizer
         tokenizer = AutoTokenizer.from_pretrained(bert_name)
         # Load the Transformers BERT model
-        transformer_model = TFAutoModel.from_pretrained(bert_name, config=config)
+        transformer_model = TFAutoModel.from_pretrained(bert_name)
         return tokenizer, transformer_model, config
+
+    def build_model(self, intents_count):
+        ###################################
+        # ------- Build the model ------- #
+        # TF Keras documentation: https://www.tensorflow.org/api_docs/python/tf/keras/Model
+        # Load the MainLayer
+        bert = self.transformer_model.layers[0]
+        # Build your model input
+        input_ids = Input(shape=(self.input_sentence_length,), name='input_ids', dtype='int32')
+        token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
+        attention_masks = Input(shape=(self.input_sentence_length,), name='attention_mask', dtype='int32')
+        inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
+        # Load the Transformers BERT model as a layer in a Keras model
+        bert_model = bert(inputs)[1]
+        dropout = Dropout(self.bert_config.hidden_dropout_prob, name='pooled_output')
+        pooled_output = dropout(bert_model)
+        # Output layer
+        intent = Dense(units=intents_count,
+                       kernel_initializer=TruncatedNormal(stddev=self.bert_config.initializer_range),
+                       name='intent', activation='softmax')(pooled_output)
+        outputs = {'intent': intent}
+        # And combine it all in a model object
+        model = Model(inputs=inputs, outputs=outputs, name='Intent_Classifier_BERT_MultiClass')
+
+        # Take a look at the model
+        model.summary()
+
+        return model

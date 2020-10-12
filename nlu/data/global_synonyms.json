@@ -4,6 +4,12 @@
         "type": "Np",
         "meaning": "HCM",
         "words": ["Bác", "Bác_Hồ", "Hồ_Chí_Minh", "Nguyễn_Ái_Quốc", "Hồ"]
+    },
+    "9001":
+    {
+        "type": "Nc",
+        "meaning": "Đảng",
+        "words": ["Đảng", "Đảng ta", "Đảng_Cộng_Sản_Việt_Nam", "Đảng Cộng_Sản"]
     }
 
 }

@@ -1,7 +1,7 @@
 # BERT imports
 from transformers import TFAutoModel, AutoConfig, AutoTokenizer
 # model initiations imports
-import tensorflow as tf
+# import tensorflow as tf
 from tensorflow.keras.layers import Input, Dropout, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
@@ -85,29 +85,7 @@ class QuestionTypeClassifier:
 
         ###################################
         # ------- Build the model ------- #
-        # TF Keras documentation: https://www.tensorflow.org/api_docs/python/tf/keras/Model
-        # Load the MainLayer
-        bert = self.transformer_model.layers[0]
-        # Build your model input
-        input_ids = Input(shape=(self.input_sentence_length,), name='input_ids', dtype='int32')
-        token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
-        attention_masks = Input(shape=(self.input_sentence_length,), name='attention_mask', dtype='int32')
-        inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
-        # Load the Transformers BERT model as a layer in a Keras model
-        bert_model = bert(inputs)[1]
-        dropout = Dropout(self.bert_config.hidden_dropout_prob, name='pooled_output')
-        pooled_output = dropout(bert_model)
-        # Output layer
-        output_layer = Dense(units=len(types),
-                             kernel_initializer=TruncatedNormal(stddev=self.bert_config.initializer_range),
-                             name='question_Type',
-                             activation='sigmoid')(pooled_output)
-        outputs = {'type': output_layer}
-        # And combine it all in a model object
-        model = Model(inputs=inputs, outputs=outputs, name='QuestionType_BERT_MultiLabel')
-
-        # Take a look at the model
-        model.summary()
+        model = self.build_model(len(types))
 
         ###################################
         # ------- Train the model ------- #
@@ -146,11 +124,8 @@ class QuestionTypeClassifier:
 
     def load(self):
         datapath = self.config[QUESTION_TYPE_MODEL_PATH]
-        # Pretrained model
-        print('(QuestionTypeClassifier) Loading pretrained model from: ', datapath)
-        self.model = tf.keras.models.load_model(datapath)
         # Max sentence length
-        self.input_sentence_length = self.model.layers[0].output_shape[0][1]
+        self.input_sentence_length = self.config[MAX_SENTENCE_LENGTH]
         # Intent maps
         type_maps = unpickle_file(self.config[QUESTION_TYPE_MAP_PATH])
         self.type2id = type_maps[OBJ2IDX]
@@ -158,6 +133,11 @@ class QuestionTypeClassifier:
         # Label Binarizer
         self.label_binarizer = MultiLabelBinarizer()
         self.label_binarizer.fit_transform([list(self.id2type.values())])
+        # Pretrained model
+        print('(QuestionTypeClassifier) Loading pretrained model from: ', datapath)
+        self.model = self.build_model(len(self.type2id))
+        self.model.load_weights(self.config[QUESTION_TYPE_MODEL_PATH])
+
         return self.type2id, self.id2type
 
     def predict(self, input_query):
@@ -181,11 +161,40 @@ class QuestionTypeClassifier:
         # print(x_tensor)
         preds = self.model.predict(input_dict)
         print(preds['type'])
-        preds = np.array([[1 if acc > float(self.config[PREDICT_THRESHOLD]) else 0 for acc in p] for p in preds['type']])
+        threshold = float(self.config[PREDICT_THRESHOLD])
+        preds = np.array([[1 if acc > threshold else 0 for acc in p] for p in preds['type']])
         preds = self.label_binarizer.inverse_transform(preds)
         for predict in preds:
             print('Predicted types: ', ', '.join(predict))
         return preds
+
+    def build_model(self, intents_count):
+        ###################################
+        # ------- Build the model ------- #
+        # TF Keras documentation: https://www.tensorflow.org/api_docs/python/tf/keras/Model
+        # Load the MainLayer
+        bert = self.transformer_model.layers[0]
+        # Build your model input
+        input_ids = Input(shape=(self.input_sentence_length,), name='input_ids', dtype='int32')
+        token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
+        attention_masks = Input(shape=(self.input_sentence_length,), name='attention_mask', dtype='int32')
+        inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
+        # Load the Transformers BERT model as a layer in a Keras model
+        bert_model = bert(inputs)[1]
+        dropout = Dropout(self.bert_config.hidden_dropout_prob, name='pooled_output')
+        pooled_output = dropout(bert_model)
+        # Output layer
+        output_layer = Dense(units=intents_count,
+                             kernel_initializer=TruncatedNormal(stddev=self.bert_config.initializer_range),
+                             name='question_type', activation='sigmoid')(pooled_output)
+        outputs = {'type': output_layer}
+        # And combine it all in a model object
+        model = Model(inputs=inputs, outputs=outputs, name='QuestionType_BERT_MultiLabel')
+
+        # Take a look at the model
+        model.summary()
+
+        return model
 
     @staticmethod
     def load_bert(bert_name):

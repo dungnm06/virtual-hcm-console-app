@@ -25,7 +25,7 @@
   "3": {
     "meaning": "phát biểu",
     "type": "V",
-    "words": ["nói", "trình_bày", "tuyên_bố", "phát_biểu"]
+    "words": ["nói", "trình_bày", "thể_hiện", "phát_biểu"]
   },
 
   "4": {
@@ -85,7 +85,7 @@
   "9": {
     "meaning": "nhóm",
     "type": "N",
-    "words": ["đám", "lũ", "tốp", "đoàn_thể", "đoàn", "nhóm", "bè", "tổ chức"]
+    "words": ["đám", "lũ", "tốp", "đoàn_thể", "đoàn", "nhóm", "bè", "tổ chức", "đội"]
   },
   "10": {
     "meaning": "thời kì đầu",
@@ -139,12 +139,12 @@
   "18": {
     "meaning": "giao",
     "type": "V",
-    "words": ["giao_phó", "giao cho", "giao", "điều"]
+    "words": ["giao_phó", "giao cho", "giao", "điều", "điều_phối", "điều cho"]
   },
   "19": {
     "meaning": "thư",
     "type": "N",
-    "words": ["bức thư", "thư"]
+    "words": ["bức thư", "thư", "lá thư"]
   },
   "20": {
     "meaning": "ta",
@@ -216,16 +216,174 @@
     "type": "N",
     "words": ["nhi_đồng", "thiếu_nhi", "trẻ_con"]
   },
-  "32":
-  {
-      "type": "Np",
-      "meaning": "Thông tấn Reuter",
-      "words": ["Reuter", "Roitơ"]
+  "32": {
+    "type": "Np",
+    "meaning": "Thông tấn Reuter",
+    "words": ["Reuter", "Roitơ"]
   },
-  "33":
-  {
-      "type": "Np",
-      "meaning": "Mao Trạch Đông",
-      "words": ["Mao", "Mao_Trạch_Đông"]
+  "33": {
+    "type": "Np",
+    "meaning": "Mao Trạch Đông",
+    "words": ["Mao", "Mao_Trạch_Đông"]
+  },
+  "35": {
+    "meaning": "dạy",
+    "type": "V",
+    "words": [
+      "dạy dỗ",
+      "dạy",
+      "chỉ bảo",
+      "bảo",
+      "dạy bảo"
+    ]
+  },
+  "36": {
+    "meaning": "điều",
+    "type": "N",
+    "words": [
+      "điều",
+      "thứ",
+      "câu"
+    ]
+  },
+  "37": {
+    "meaning": "chúc mừng",
+    "type": "V",
+    "words": [
+      "chúc_mừng",
+      "mừng",
+      "chúc",
+      "cầu chúc"
+    ]
+  },
+  "38": {
+    "meaning": "vũ khí",
+    "type": "V",
+    "words": [
+      "vũ khí",
+      "quân trang",
+      "binh khí",
+      "vũ trang"
+    ]
+  },
+  "39": {
+    "meaning": "nhiệm vụ",
+    "type": "N",
+    "words": [
+      "nhiệm_vụ",
+      "công việc",
+      "việc",
+      "trách nhiệm"
+    ]
+  },
+  "40": {
+    "meaning": "cải tổ",
+    "type": "V",
+    "words": [
+      "cải tổ",
+      "cải cách",
+      "cải thiện",
+      "tổ chức lại"
+    ]
+  },
+  "41": {
+    "meaning": "chi nhánh",
+    "type": "N",
+    "words": [
+      "chi_nhánh",
+      "nhánh"
+    ]
+  },
+  "42": {
+    "meaning": "chính thức",
+    "type": "A",
+    "words": [
+      "chánh thức",
+      "chính thức"
+    ]
+  },
+  "43": {
+    "meaning": "công việc",
+    "type": "N",
+    "words": [
+      "công_việc",
+      "việc",
+      "việc làm",
+      "hoạt động"
+    ]
+  },
+  "44": {
+    "meaning": "nội dung",
+    "type": "N",
+    "words": [
+      "đại ý",
+      "nội dung",
+      "ý chính"
+    ]
+  },
+  "45": {
+    "meaning": "bài",
+    "type": "N",
+    "words": [
+      "bài",
+      "buổi",
+      "cuộc"
+    ]
+  },
+  "46": {
+    "meaning": "nói chuyện",
+    "type": "V",
+    "words": [
+      "nói chuyện",
+      "trò chuyện",
+      "đàm thoại",
+      "hội đàm"
+    ] 
+  },
+  "47": {
+    "meaning": "bế mạc",
+    "type": "V",
+    "words": [
+      "bế mạc",
+      "kết thúc",
+      "cuối cùng"
+    ]
+  },
+  "48": {
+    "meaning": "cán bộ",
+    "type": "V",
+    "words": [
+      "cán bộ",
+      "công chức",
+      "viên chức",
+      "đồng chí"
+    ]
+  },
+  "49": {
+    "meaning": "gửi",
+    "type": "V",
+    "words": [
+      "gửi",
+      "gởi"
+    ]
+  },
+  "50": {
+    "meaning": "chiến sĩ",
+    "type": "N",
+    "words": [
+      "chiến sĩ",
+      "chiến binh",
+      "người lính",
+      "lính",
+      "binh sĩ",
+      "bộ đội"
+    ]
+  },
+  "51": {
+    "meaning": "dân quân",
+    "type":  "N",
+    "words": [
+      "dân quân"
+    ]
   }
 }

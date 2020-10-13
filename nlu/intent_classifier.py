@@ -115,7 +115,7 @@ class IntentClassifier:
         model.fit(
             x={
                 'input_ids': x['input_ids'],
-                'token_type_ids': x['token_type_ids'],
+                # 'token_type_ids': x['token_type_ids'],
                 'attention_mask': x['attention_mask']
             },
             y={'intent': y},
@@ -147,7 +147,7 @@ class IntentClassifier:
     def predict(self, input_query):
         print('Predict:')
         x = word_segmentation(input_query)
-        print(x)
+        # print(x)
         x = self.tokenizer(
             text=x,
             return_tensors='tf',
@@ -158,7 +158,7 @@ class IntentClassifier:
             truncation=True)
         input_dict = {
             'input_ids': x['input_ids'],
-            'token_type_ids': x['token_type_ids'],
+            # 'token_type_ids': x['token_type_ids'],
             'attention_mask': x['attention_mask']
         }
         pred = self.model.predict(input_dict)
@@ -189,9 +189,10 @@ class IntentClassifier:
         bert = self.transformer_model.layers[0]
         # Build your model input
         input_ids = Input(shape=(self.input_sentence_length,), name='input_ids', dtype='int32')
-        token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
+        # token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
         attention_masks = Input(shape=(self.input_sentence_length,), name='attention_mask', dtype='int32')
-        inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
+        # inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
+        inputs = {'input_ids': input_ids, 'attention_mask': attention_masks}
         # Load the Transformers BERT model as a layer in a Keras model
         bert_model = bert(inputs)[1]
         dropout = Dropout(self.bert_config.hidden_dropout_prob, name='pooled_output')

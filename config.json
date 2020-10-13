@@ -15,7 +15,7 @@
     "N-E-main",
     "N-main"
   ],
-  "exclude_pos_tag": ["E", "A", "L", "CH", "X"],
+  "exclude_pos_tag": ["E", "L", "CH", "X"],
   "exclude_word": ["bị", "được", "giữa", "và", "là"],
   "intent_data_path": "nlu/data/IntentData.csv",
   "intent_model_weights": "nlu/data/intent_reconizer/intent_reconizer",

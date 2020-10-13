@@ -141,9 +141,9 @@ class QuestionTypeClassifier:
         return self.type2id, self.id2type
 
     def predict(self, input_query):
-        print('Predict:')
+        # print('Predict:')
         x = word_segmentation(input_query)
-        print(x)
+        # print(x)
         x = self.tokenizer(
             text=x,
             return_tensors='tf',
@@ -165,7 +165,7 @@ class QuestionTypeClassifier:
         preds = np.array([[1 if acc > threshold else 0 for acc in p] for p in preds['type']])
         preds = self.label_binarizer.inverse_transform(preds)
         # for predict in preds:
-        print('Predicted types: ', ', '.join(preds[0]))
+        # print('Predicted types: ', ', '.join(preds[0]))
         return list(preds[0])
 
     def build_model(self, intents_count):

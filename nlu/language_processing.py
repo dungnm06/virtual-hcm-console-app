@@ -1,4 +1,3 @@
-from nlu.model.intent import Intent
 from vncorenlp import VnCoreNLP
 from utils.files import load_config
 from common.constant import *
@@ -89,7 +88,6 @@ def generate_similary_sentences(sentence_synonym_dict_pair, word_segemented=Fals
     return_val = []
     # synonym_dicts: eg: 1: 'sinh', 2: 'TenBac' (each dict is instance of SynonymSet obj)
     # ['Bác', 'sinh', 'năm', '1890']
-    words_segmented_sentences = []
     if not word_segemented:
         words_segmented_sentences = word_segmentation_no_join(org_sentence)
     else:
@@ -119,7 +117,8 @@ def get_synonym_replaceable_pos(org_sentence, synonym_dicts):
     synonyms_replaceable_pos = []
     for i, word in enumerate(org_sentence):
         for dictionary_id in synonym_dicts:
-            if word in synonym_dicts[dictionary_id].words:
+            synonyms_words = [w.lower() for w in synonym_dicts[dictionary_id].words]
+            if word.lower() in synonyms_words:
                 synonyms_replaceable_pos.append((i, dictionary_id))
     return synonyms_replaceable_pos
 
@@ -130,7 +129,7 @@ def batch_generate_similary_sentences(sentence_synonym_dict_pairs):
 
 def get_synonym_dicts(word, synonym_dicts):
     # TODO:
-    #  Use word embedding for sentiment analyze for more accurate in getting right synonym set
+    #  Use word embedding for sentilast_statement analyze for more accurate in getting right synonym set
     #  in case of multiple meaning word may belong to multiple synonym set
     #  Currently get all synonym sets thats have the word
     return [synonym_dicts[sid] for sid in synonym_dicts if word in synonym_dicts[sid].words]
@@ -144,7 +143,7 @@ def find_phrase_in_sentence(content, sentence, synonyms):
         (content, synonyms),
         word_segemented=True,
         segemented_output=True)
-    print(similaries)
+    # print(similaries)
     for sim in similaries:
         # Should i search for words in sentence by order in array (1)
         # or just ok by having all words exist in sentence ? (2)
@@ -159,7 +158,7 @@ def find_phrase_in_sentence(content, sentence, synonyms):
                 exist_arr.append(False)
                 break
         if all(exist_arr):
-            print('Found critical data', content)
+            # print('Found critical data', content)
             idx_arr.sort()
             start_idx = idx_arr[0]
             end_idx = idx_arr[len(idx_arr) - 1]
@@ -172,7 +171,7 @@ def grammar_struct_analyze(sentence_pos, ng_patterns, critical_data_infos):
     sentence_struct = [w[1] for w in sentence_pos]
     struct_ok = True
     for pattern in ng_patterns:
-        pattern_struct = pattern[0].split(MINUS)
+        pattern_struct = pattern.split(MINUS)
         start_pos = critical_data_infos[1]
         end_pos = critical_data_infos[2]
         rel_pos_main = pattern_struct.index('main')
@@ -226,7 +225,7 @@ def grammar_struct_analyze(sentence_pos, ng_patterns, critical_data_infos):
 
 def analyze_critical_parts(intent, sentence):
     # Word POS tagging
-    pos_tag = rdrsegmenter.pos_tag(sentence)
+    pos_tag = pos_tagging(sentence)
     # Obtain named entity in the sentence
     ner = named_entity_reconize(sentence)
     # Data for the process
@@ -238,8 +237,8 @@ def analyze_critical_parts(intent, sentence):
     if len(ner) == 0 and len(intent_critical_datas) == 0:
         return True
     # User mentions more than intent critical datas number
-    elif len(ner) > len(intent_critical_datas):
-        return False
+    # elif len(ner) > len(intent_critical_datas):
+    #     return False
 
     # Compare named entities in sentence with entities in intent
     check_flag = True
@@ -252,10 +251,10 @@ def analyze_critical_parts(intent, sentence):
                 if c1[0] == typ:
                     entities_in_intent.append(c)
                     break
-        if len(entities_in_intent) > 0:
-            print(entities_in_intent)
-        else:
-            print('No', typ, 'entity in intent')
+        # if len(entities_in_intent) > 0:
+        #     print(entities_in_intent)
+        # else:
+        #     print('No', typ, 'entity in intent')
 
         # Find in the sentence for intent critical datas
         eit_1 = entities_in_intent[:]
@@ -266,16 +265,15 @@ def analyze_critical_parts(intent, sentence):
             main_pos = struct.index(typ)
             # find entity existence in the sentence
             # corresponse_part: (phrase, entity start pos, entity end pos)
-            corresponse_part = None
             if typ == 'MISC':
                 content = [part.split(':')[1] for part in eit[main_pos][1].split('+') if
                            part.split(':')[0] not in exclude_pos_tag]
                 content = [c for c in content if c not in exclude_words]
-                print(content)
+                # print(content)
                 corresponse_part = find_phrase_in_sentence(content, tokenized_sentence_list, intent.synonym_sets)
             else:
                 eit_arr = [e[1] for e in eit if e[1] not in exclude_words and e[0] not in exclude_pos_tag]
-                print(eit_arr)
+                # print(eit_arr)
                 corresponse_part = find_phrase_in_sentence(eit_arr, tokenized_sentence_list, intent.synonym_sets)
             # Critical part still not found -> not same intent
             if not corresponse_part:
@@ -287,14 +285,23 @@ def analyze_critical_parts(intent, sentence):
     return check_flag
 
 
-def analyze_sentence_components(intent, sentence):
-    # TODO
+def analyze_verb_components(intent, sentence):
+
     return True
 
 
-def is_same_intent(intent, sentence):
+def analyze_sentence_components(intent, sentence):
+    # Word POS tagging
+    pos_tag = pos_tagging(sentence)
+    # Obtain named entity in the sentence
+    ner = named_entity_reconize(sentence)
+    # Data for the process
+    intent_critical_datas = intent.critical_datas
+    tokenized_sentence = word_segmentation(sentence)
+    tokenized_sentence_list = tokenized_sentence.split()
+
     flag = analyze_critical_parts(intent, sentence)
     if not flag:
         return flag
-    flag = analyze_sentence_components(intent, sentence)
+    flag = analyze_verb_components(intent, sentence)
     return flag

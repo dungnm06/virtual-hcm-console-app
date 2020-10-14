@@ -1,5 +1,5 @@
 {
-  "vncorenlp": "C:\\Users\\Tewi\\Desktop\\nlp\\vncorenlp\\VnCoreNLP-1.1.1.jar",
+  "vncorenlp": "L:\\VnCoreNLP\\VnCoreNLP-1.1.1.jar",
   "bert": "vinai/phobert-base",
   "question_type_map": {
       "1": "what",
@@ -15,14 +15,14 @@
     "N-E-main",
     "N-main"
   ],
-  "exclude_pos_tag": ["E", "A", "L", "CH", "X"],
+  "exclude_pos_tag": ["E", "L", "CH", "X"],
   "exclude_word": ["bị", "được", "giữa", "và", "là"],
   "intent_data_path": "nlu/data/IntentData.csv",
   "intent_model_weights": "nlu/data/intent_reconizer/intent_reconizer",
-  "intent_map_path": "nlu/data/intent_map.pickle",
+  "intent_map_file_path": "nlu/data/intent_map.pickle",
   "question_type_data_path": "nlu/data/QuestionTypeData",
   "question_type_model_weights": "nlu/data/question_type_reconizer/question_type_reconizer",
-  "question_type_map_path": "nlu/data/question_type_map.pickle",
+  "question_type_map_file_path": "nlu/data/question_type_map.pickle",
   "global_synonyms_file_path": "nlu/data/global_synonyms.json",
   "synonyms_file_path": "nlu/data/synonyms.json",
   "predict_threshold": "0.5",

@@ -13,8 +13,7 @@ import pandas as pd
 # numpy
 import numpy as np
 # Text processing utils
-from .language_processing import batch_word_segmentation
-from .language_processing import generate_similary_sentences
+from .language_processing import *
 from utils.files import *
 # Constant
 from common.constant import *
@@ -116,7 +115,7 @@ class IntentClassifier:
         model.fit(
             x={
                 'input_ids': x['input_ids'],
-                'token_type_ids': x['token_type_ids'],
+                # 'token_type_ids': x['token_type_ids'],
                 'attention_mask': x['attention_mask']
             },
             y={'intent': y},
@@ -128,12 +127,12 @@ class IntentClassifier:
             OBJ2IDX: self.intent_to_idx,
             IDX2OBJ: self.idx_to_intent
         }
-        pickle_file(map_datas, self.config[INTENT_MAP_PATH])
+        pickle_file(map_datas, self.config[INTENT_MAP_FILE_PATH])
 
     def load(self):
         datapath = self.config[INTENT_MODEL_PATH]
         # Intent maps
-        intent_maps = unpickle_file(self.config[INTENT_MAP_PATH])
+        intent_maps = unpickle_file(self.config[INTENT_MAP_FILE_PATH])
         self.intent_to_idx = intent_maps[OBJ2IDX]
         self.idx_to_intent = intent_maps[IDX2OBJ]
         # Max sentence length
@@ -147,8 +146,8 @@ class IntentClassifier:
 
     def predict(self, input_query):
         print('Predict:')
-        x = batch_word_segmentation(input_query)
-        print(x)
+        x = word_segmentation(input_query)
+        # print(x)
         x = self.tokenizer(
             text=x,
             return_tensors='tf',
@@ -159,11 +158,11 @@ class IntentClassifier:
             truncation=True)
         input_dict = {
             'input_ids': x['input_ids'],
-            'token_type_ids': x['token_type_ids'],
+            # 'token_type_ids': x['token_type_ids'],
             'attention_mask': x['attention_mask']
         }
         pred = self.model.predict(input_dict)
-        print(pred)
+        # print(pred)
         intent_idx = np.argmax(pred['intent'], axis=1)[0]
         pred_intent = self.idx_to_intent[intent_idx]
         print("Intent: ", pred_intent)
@@ -190,9 +189,10 @@ class IntentClassifier:
         bert = self.transformer_model.layers[0]
         # Build your model input
         input_ids = Input(shape=(self.input_sentence_length,), name='input_ids', dtype='int32')
-        token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
+        # token_ids = Input(shape=(self.input_sentence_length,), name='token_type_ids', dtype='int32')
         attention_masks = Input(shape=(self.input_sentence_length,), name='attention_mask', dtype='int32')
-        inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
+        # inputs = {'input_ids': input_ids, 'token_type_ids': token_ids, 'attention_mask': attention_masks}
+        inputs = {'input_ids': input_ids, 'attention_mask': attention_masks}
         # Load the Transformers BERT model as a layer in a Keras model
         bert_model = bert(inputs)[1]
         dropout = Dropout(self.bert_config.hidden_dropout_prob, name='pooled_output')
